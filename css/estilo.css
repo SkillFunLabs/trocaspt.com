@@ -1129,23 +1129,33 @@ button {
     }
     
     .header {
-        flex-direction: column;
+        flex-direction: row;
+        flex-wrap: nowrap;
         align-items: center;
+        padding: 0.6rem 1rem;
     }
-    
+
+    .social-buttons {
+        order: -1;
+        margin-left: 0;
+        margin-top: 0;
+        width: auto;
+        flex-shrink: 0;
+        gap: 0.4rem;
+    }
+
     h1 {
         position: static;
         transform: none;
-        margin-bottom: 0.8rem;
+        flex: 1;
+        text-align: center;
+        font-size: 1.1rem;
+        margin: 0;
+        white-space: nowrap;
     }
-    
-    .social-buttons {
-        margin-left: 0;
-        margin-top: 0.8rem;
-        order: 3;
-        width: 100%;
-        justify-content: center;
-        gap: 0.6rem;
+
+    .user-area {
+        flex-shrink: 0;
     }
 }
 
