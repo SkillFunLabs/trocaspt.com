@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta name="google-site-verification" content="Yluh12CloxbsY1_hCkXxIEI2aaPdqky9sIohsJDURuk" />
+    <meta name="description" content="Trocas PT - Plataforma gratuita de trocas diretas em Portugal. Anuncie tecnologia, casa, veículos e muito mais. Junte-se à comunidade!">
+    <meta property="og:title" content="Trocas PT - Anúncios de troca">
+    <meta property="og:description" content="Plataforma gratuita para trocar produtos e serviços. Anúncio no Trocas PT — Página oficial: facebook.com/trocaspt">
+    <meta property="og:image" content="https://i.imgur.com/BCKLcqc.jpg">
+    <meta property="og:url" content="https://trocaspt.com">
+    <meta property="og:type" content="website">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Trocas PT · Premium · Chat · Localização</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/estilo.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1><i class="fas fa-exchange-alt"></i> Trocas PT</h1>
+        
+        <!-- Botões Facebook -->
+        <div class="social-buttons">
+            <a href="https://web.facebook.com/profile.php?id=61572234736788" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="fb-page-btn"
+               title="Visitar página oficial no Facebook">
+                <i class="fab fa-facebook-f"></i> 
+                Facebook
+            </a>
+            <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ftrocaspt.com%2F" 
+               target="_blank" 
+               rel="noopener noreferrer" 
+               class="fb-share-btn"
+               title="Partilhar o site Trocas PT no Facebook">
+                <i class="fab fa-facebook-f"></i> 
+                Partilhar
+            </a>
+        </div>
+        
+        <div class="user-area" id="userArea"></div>
+    </div>
+
+    <div class="banner-top"><i class="fas fa-ad"></i> Espaço para publicidade</div>
+
+    <div class="two-columns">
+        <div class="form-card">
+            <button class="publish-toggle-btn" id="togglePublishBtn">
+                <i class="fas fa-plus-circle"></i> Publicar Anúncio
+            </button>
+            
+            <div class="publish-form" id="publishForm">
+                <div class="form-group" style="margin-top:1.5rem">
+                    <label>Título *</label>
+                    <input type="text" id="title" placeholder="Ex: iPhone 12 64GB azul">
+                </div>
+                <div class="form-group">
+                    <label>Categoria *</label>
+                    <select id="category"></select>
+                </div>
+                <div class="form-group">
+                    <label>Descrição</label>
+                    <textarea id="description" rows="2" placeholder="Estado, acessórios..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Procuro em troca *</label>
+                    <textarea id="want" rows="2" placeholder="Ex: PlayStation 5..."></textarea>
+                </div>
+                <div class="form-group">
+                    <label>Distrito *</label>
+                    <select id="district"></select>
+                </div>
+                <div class="form-group">
+                    <label>Concelho</label>
+                    <select id="county"></select>
+                </div>
+                <div class="form-group">
+                    <label>Imagens (máx. 3)</label>
+                    <div id="imagesContainer" class="images-upload-area"></div>
+                </div>
+                <div style="display:flex; gap:0.5rem;">
+                    <button id="publishBtn" style="flex:2">Publicar</button>
+                    <button id="premiumFromPublishBtn" type="button" style="flex:1; background:var(--gold); color:#000;">
+                        <i class="fas fa-crown"></i> Destacar
+                    </button>
+                </div>
+                <button class="cancel-btn" id="cancelPublishBtn">Cancelar</button>
+            </div>
+        </div>
+
+        <div class="list-card">
+    <div style="display: flex; justify-content: flex-end; margin-bottom: 0.5rem;">
+        <button id="toggleSearchBtn" class="publish-toggle-btn" style="width: auto; padding: 0.5rem 1.2rem; font-size: 0.9rem;">
+            <i class="fas fa-sliders-h"></i> Filtrar
+        </button>
+    </div>
+
+    <div id="searchArea" class="search-area-collapsible">
+        <div class="search-card">
+            <div class="search-bar">
+                <input type="text" id="searchInput" placeholder="🔍 Pesquisar...">
+                <button id="searchBtn"><i class="fas fa-search"></i> Filtrar</button>
+            </div>
+            <div class="filter-row">
+                <select id="filterDistrict"><option value="">Distritos (todos)</option></select>
+                <select id="filterCounty"><option value="">Concelhos (todos)</option></select>
+                <select id="filterCategory"><option value="">Categorias (todas)</option></select>
+            </div>
+        </div>
+    </div>
+
+    <div id="adsContainer" class="ads-grid">
+        <div class="empty-message">A carregar...</div>
+    </div>
+</div>
+
+    <div class="banner-bottom"><i class="fas fa-ad"></i> Espaço para publicidade</div>
+
+    <footer>
+        Plataforma de trocas · 
+        <a href="termos.html">Termos</a> · 
+        <a href="privacidade.html">Privacidade</a><br>
+        &copy; 2026 Trocas PT<br>
+        Contacto: <a href="mailto:contacto@trocaspt.com">contacto@trocaspt.com</a>
+    </footer>
+</div>
+
+<!-- ================== MODAIS ================== -->
+
+<!-- Modal Detalhe do Anúncio -->
+<div id="adDetailModal" class="ad-detail-modal">
+    <div class="ad-detail-content">
+        <div class="ad-detail-back">
+            <button id="closeAdDetail"><i class="fas fa-arrow-left"></i> Voltar</button>
+            <span id="adDetailBackTitle"></span>
+        </div>
+        <div id="adDetailGalleryWrap"></div>
+        <div id="adDetailThumbsWrap"></div>
+        <div class="ad-detail-body">
+            <div class="ad-detail-title" id="adDetailTitle"></div>
+            <div class="ad-detail-meta" id="adDetailMeta"></div>
+            <div class="ad-detail-desc" id="adDetailDesc"></div>
+            <div class="ad-detail-want">
+                <strong><i class="fas fa-exchange-alt"></i> Procura</strong>
+                <span id="adDetailWant"></span>
+            </div>
+            <button class="ad-detail-chat-btn" id="adDetailChatBtn">
+                <i class="fas fa-comment-dots"></i> Chat
+            </button>
+        </div>
+    </div>
+</div>
+
+<!-- Lightbox -->
+<div id="lightbox" class="lightbox">
+    <button class="lightbox-back" id="lightboxBack"><i class="fas fa-arrow-left"></i> Voltar</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev"><i class="fas fa-chevron-left"></i></button>
+    <img class="lightbox-img" id="lightboxImg">
+    <button class="lightbox-nav lightbox-next" id="lightboxNext"><i class="fas fa-chevron-right"></i></button>
+    <div class="lightbox-counter" id="lightboxCounter"></div>
+</div>
+
+<!-- Modal Editar Anúncio -->
+<div id="editModal" class="modal">
+    <div class="modal-content">
+        <div style="display:flex;justify-content:space-between">
+            <h3>Editar</h3>
+            <button id="closeEditModal" style="background:none;border:none;font-size:1.5rem;color:#fff;width:auto">&times;</button>
+        </div>
+        <div class="form-group"><label>Título</label><input id="editTitle"></div>
+        <div class="form-group"><label>Categoria</label><select id="editCategory"></select></div>
+        <div class="form-group"><label>Descrição</label><textarea id="editDescription"></textarea></div>
+        <div class="form-group"><label>Procuro</label><textarea id="editWant"></textarea></div>
+        <div class="form-group"><label>Distrito</label><select id="editDistrict"></select></div>
+        <div class="form-group"><label>Concelho</label><select id="editCounty"></select></div>
+        <div class="form-group"><label>Imagens</label><div id="editImagesContainer" class="images-upload-area"></div></div>
+        <button id="saveEditBtn">Guardar</button>
+    </div>
+</div>
+
+<!-- Modal Chat -->
+<div id="chatModal" class="chat-modal">
+    <div class="chat-modal-content">
+        <div class="chat-header">
+            <span class="chat-title" id="chatTitle"></span>
+            <button class="chat-close-btn" id="closeChat"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-messages" id="chatMessages"></div>
+        <div class="chat-input-row">
+            <input type="text" class="chat-text-input" id="chatInput" placeholder="Mensagem...">
+            <button class="btn-send" id="sendMsgBtn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+</div>
+
+<!-- Modal Inbox -->
+<div id="inboxModal" class="inbox-modal">
+    <div class="inbox-modal-content">
+        <div class="inbox-header">
+            <h3>Conversas</h3>
+            <button class="chat-close-btn" id="closeInbox"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="inbox-list" id="inboxList"></div>
+    </div>
+</div>
+
+<!-- Modal Minha Conta -->
+<div id="accountModal" class="modal">
+    <div class="modal-content" style="max-width:500px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+            <h3 style="color:var(--accent);margin:0"><i class="fas fa-user-circle"></i> Minha Conta</h3>
+            <button id="closeAccountModalBtn" style="background:none;border:none;font-size:1.5rem;color:#fff;cursor:pointer;width:auto">&times;</button>
+        </div>
+        <div id="accountInfo" style="color:#fff">
+            <p><strong>Email:</strong> <span id="accountEmail"></span></p>
+            <p><strong>Nome:</strong> <span id="accountDisplayName"></span></p>
+        </div>
+        <hr style="border-color:rgba(255,255,255,0.1);margin:1rem 0">
+        <div class="form-group">
+            <label>Alterar nome de utilizador</label>
+            <input type="text" id="newDisplayNameInput" placeholder="Novo nome">
+            <button id="updateDisplayNameBtn" style="margin-top:0.5rem;background:var(--accent)">Atualizar nome</button>
+        </div>
+        <div class="form-group">
+            <label>Alterar email</label>
+            <input type="email" id="newEmailInput" placeholder="Novo email">
+            <input type="password" id="currentPasswordForEmail" placeholder="Senha atual" style="margin-top:0.5rem">
+            <button id="updateEmailBtn" style="margin-top:0.5rem;background:var(--accent)">Atualizar email</button>
+        </div>
+        <div class="form-group">
+            <label>Alterar senha</label>
+            <p style="font-size:0.75rem;color:var(--muted)">Será enviado um email para redefinir a sua senha.</p>
+            <button id="resetPasswordBtn" style="margin-top:0.5rem;background:var(--gold);color:#000">
+                <i class="fas fa-envelope"></i> Enviar email de recuperação
+            </button>
+        </div>
+        <hr style="border-color:rgba(255,255,255,0.1);margin:1rem 0">
+        <button id="logoutFromAccountBtn" style="background:transparent;border:1px solid var(--muted);color:var(--muted);margin-bottom:0.5rem">
+            <i class="fas fa-sign-out-alt"></i> Terminar sessão
+        </button>
+        <button id="deleteAccountFromModalBtn" style="background:transparent;border:1px solid var(--danger);color:var(--danger);font-size:0.8rem;padding:0.5rem">
+            <i class="fas fa-trash-alt"></i> Apagar conta
+        </button>
+    </div>
+</div>
+
+<!-- ================== MODAL DESTAQUE PREMIUM ================== -->
+<div id="premiumRequestModal" class="modal">
+    <div class="modal-content" style="max-width:550px">
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
+            <h3 style="color:var(--gold);margin:0"><i class="fas fa-crown"></i> <span id="premiumModalTitle">Destacar Anúncio</span></h3>
+            <button id="closePremiumRequestBtn" style="background:none;border:none;font-size:1.5rem;color:#fff;cursor:pointer;width:auto">&times;</button>
+        </div>
+        
+        <p style="margin-bottom:1rem">Anúncio: <strong id="premiumAdTitle"></strong></p>
+        
+        <!-- Botões Stripe para destaque individual -->
+        <div style="background:rgba(255,255,255,0.05);padding:1rem;border-radius:12px;margin-bottom:1rem">
+            <p style="margin-bottom:0.8rem"><i class="fas fa-star" style="color:var(--gold)"></i> <strong>Destacar este anúncio:</strong></p>
+            <div style="display:flex;flex-direction:column;gap:0.8rem">
+                <a href="https://buy.stripe.com/9B628j4cbb6kcVO9bmgIo01" target="_blank" style="background:#635bff;color:white;text-align:center;padding:10px;border-radius:40px;text-decoration:none;font-weight:bold;">💎 7 dias – 0,50€</a>
+                <a href="https://buy.stripe.com/6oU00b7on8Yc1d69bmgIo04" target="_blank" style="background:#635bff;color:white;text-align:center;padding:10px;border-radius:40px;text-decoration:none;font-weight:bold;">💎 15 dias – 1,00€</a>
+                <a href="https://buy.stripe.com/cNifZ9eQPcao5tmfzKgIo03" target="_blank" style="background:#635bff;color:white;text-align:center;padding:10px;border-radius:40px;text-decoration:none;font-weight:bold;">💎 30 dias – 2,00€</a>
+            </div>
+        </div>
+        
+        <!-- Botão Stripe para conta premium -->
+        <div style="background:rgba(245,192,96,0.15);border:1px solid var(--gold);padding:1rem;border-radius:12px;margin-bottom:1.5rem">
+            <p style="margin-bottom:0.5rem;color:var(--gold);font-weight:700">
+                <i class="fas fa-crown"></i> CONTA PREMIUM
+            </p>
+            <p style="font-size:0.9rem;margin-bottom:0.5rem">
+                <strong>10,00€ – 30 dias</strong><br>
+                <span style="font-size:0.8rem;opacity:0.9">Todos os seus anúncios ficam destacados durante 30 dias.</span>
+            </p>
+            <a href="https://buy.stripe.com/5kQfZ94cbdes5tmafqgIo00" target="_blank" style="display:block;background:#f5b042;color:#1e1e2f;text-align:center;padding:12px;border-radius:40px;text-decoration:none;font-weight:bold;margin-top:10px;">👑 Ativar Conta Premium – 10,00€</a>
+        </div>
+        
+        <!-- Área do ID com botão Copiar -->
+        <div style="background:rgba(0,0,0,0.3);padding:1rem;border-radius:12px;margin-bottom:1rem">
+            <label style="display:block;margin-bottom:0.5rem;font-size:0.85rem;font-weight:bold;">📋 ID necessário para ativação:</label>
+            <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.8rem">
+                <input type="text" id="premiumAdId" readonly style="flex:3;background:transparent;border:1px solid var(--border);padding:0.6rem;color:var(--gold);font-weight:700;text-align:center;font-size:0.9rem;border-radius:8px;font-family:monospace">
+                <button id="copyIdBtn" style="flex:1;background:var(--gold);color:#000;border:none;padding:0.6rem;border-radius:8px;cursor:pointer;font-weight:bold;">
+                    <i class="fas fa-copy"></i> Copiar
+                </button>
+            </div>
+            <p id="premiumUserIdLine" style="font-size:0.75rem;color:#aaa;margin-top:0.3rem;">
+                Para Conta Premium, utilize o ID da sua conta: <strong id="premiumUserIdDisplay"></strong>
+            </p>
+        </div>
+        
+        <!-- Instruções claras com o novo email -->
+        <div style="background:rgba(100,100,200,0.1);padding:1rem;border-radius:12px;margin-bottom:1rem;border-left:3px solid var(--gold)">
+            <p style="font-size:0.85rem;margin-bottom:0.5rem;font-weight:bold">📌 Como ativar o destaque:</p>
+            <ol style="margin-left:1.2rem;font-size:0.8rem;line-height:1.5;color:#ddd">
+                <li>Copie o <strong>ID</strong> acima (botão "Copiar").</li>
+                <li>Escolha um plano e clique no botão de pagamento (Stripe).</li>
+                <li>Após o pagamento, envie um email para <strong><a href="mailto:premium-destaque@trocaspt.com" style="color:var(--gold);text-decoration:underline;">premium-destaque@trocaspt.com</a></strong> com:</li>
+                <ul style="margin-left:1.5rem;margin-top:0.3rem">
+                    <li>O <strong>ID copiado</strong> (anúncio ou conta).</li>
+                    <li>O <strong>comprovativo</strong> ou número da transação (ex: "ch_..." do Stripe).</li>
+                </ul>
+                <li>A ativação será feita <strong>manualmente em até 24h</strong> após a confirmação do pagamento.</li>
+            </ol>
+        </div>
+        
+        <p style="font-size:0.7rem;color:var(--muted);text-align:center">
+            🔐 Pagamento processado pela Stripe. Dúvidas? <a href="mailto:premium-destaque@trocaspt.com" style="color:var(--gold);">premium-destaque@trocaspt.com</a>
+        </p>
+    </div>
+</div>
+
+<script>
+    // Funcionalidade do botão Copiar
+    document.addEventListener('DOMContentLoaded', function() {
+        const copyBtn = document.getElementById('copyIdBtn');
+        const idField = document.getElementById('premiumAdId');
+        if (copyBtn && idField) {
+            copyBtn.addEventListener('click', function() {
+                idField.select();
+                idField.setSelectionRange(0, 99999);
+                navigator.clipboard.writeText(idField.value).then(function() {
+                    alert('ID copiado: ' + idField.value);
+                }).catch(function() {
+                    alert('Copie manualmente: ' + idField.value);
+                });
+            });
+        }
+    });
+</script>
+
+<script>
+    // Adiciona a funcionalidade do botão Copiar (caso não exista globalmente)
+    document.addEventListener('DOMContentLoaded', function() {
+        const copyBtn = document.getElementById('copyIdBtn');
+        const idField = document.getElementById('premiumAdId');
+        if (copyBtn && idField) {
+            copyBtn.addEventListener('click', function() {
+                idField.select();
+                idField.setSelectionRange(0, 99999);
+                navigator.clipboard.writeText(idField.value).then(function() {
+                    alert('ID copiado: ' + idField.value);
+                }).catch(function() {
+                    alert('Copie manualmente: ' + idField.value);
+                });
+            });
+        }
+    });
+</script>
+
+<script src="js/firebase-config.js"></script>
+<script src="js/main.js"></script>
+<!-- 100% privacy-first analytics -->
+<script data-collect-dnt="true" async src="https://scripts.simpleanalyticscdn.com/latest.js"></script>
+<noscript><img src="https://queue.simpleanalyticscdn.com/noscript.gif?collect-dnt=true" alt="" referrerpolicy="no-referrer-when-downgrade"/></noscript>
+</body>
+</html>

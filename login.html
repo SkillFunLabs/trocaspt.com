@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+    <title>Login · Trocas PT</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+    <style>
+        * { 
+            margin: 0; 
+            padding: 0; 
+            box-sizing: border-box; 
+        }
+        body {
+            background: linear-gradient(135deg, #f5e6d3 0%, #e8d5b5 100%);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            padding: 2rem 1rem;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+        .card {
+            background: #2c3e50;
+            border-radius: 32px;
+            padding: 2.5rem 2rem;
+            max-width: 450px;
+            width: 100%;
+            box-shadow: 0 20px 35px rgba(0,0,0,0.2);
+            text-align: center;
+        }
+        h1 { 
+            color: #f0ad4e; 
+            margin-bottom: 1.8rem; 
+            font-size: 1.85rem; 
+        }
+        .form-group { 
+            margin-bottom: 1.2rem; 
+            text-align: left; 
+        }
+        label { 
+            color: #d1e0eb; 
+            display: block; 
+            margin-bottom: 0.4rem; 
+            font-weight: 600; 
+            font-size: 0.95rem;
+        }
+        input { 
+            width: 100%; 
+            padding: 0.85rem 1rem; 
+            border-radius: 40px; 
+            border: none; 
+            background: white; 
+            font-size: 1.05rem; 
+        }
+        input:focus {
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(240, 173, 78, 0.3);
+        }
+        button { 
+            background: #f0ad4e; 
+            color: #2c3e50; 
+            border: none; 
+            padding: 0.9rem; 
+            width: 100%; 
+            border-radius: 40px; 
+            font-weight: bold; 
+            font-size: 1.1rem; 
+            cursor: pointer; 
+            margin-top: 1.2rem; 
+            transition: 0.2s; 
+        }
+        button:hover { 
+            background: #e6a03a; 
+            transform: translateY(-2px);
+        }
+        .link { 
+            margin-top: 1.8rem; 
+            color: #b0c4de; 
+            font-size: 0.95rem;
+        }
+        .link a { 
+            color: #f0ad4e; 
+            text-decoration: none; 
+            font-weight: 500;
+        }
+        .error { 
+            color: #ffaa99; 
+            margin-top: 0.8rem; 
+            font-size: 0.9rem; 
+            min-height: 1.2em;
+        }
+        .success { 
+            color: #9fdf9f; 
+            margin-top: 0.8rem; 
+            font-size: 0.9rem; 
+        }
+        .forgot-link { 
+            display: block; 
+            margin-top: 0.4rem; 
+            text-align: right; 
+        }
+        .forgot-link a { 
+            color: #b0c4de; 
+            font-size: 0.85rem; 
+            text-decoration: none; 
+        }
+        .forgot-link a:hover { 
+            color: #f0ad4e; 
+        }
+    </style>
+</head>
+<body>
+<div class="card">
+    <h1><i class="fas fa-sign-in-alt"></i> Entrar</h1>
+    
+    <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="email" placeholder="exemplo@email.com" autocomplete="email">
+    </div>
+    
+    <div class="form-group">
+        <label>Palavra-passe</label>
+        <input type="password" id="password" placeholder="••••••" autocomplete="current-password">
+        <div class="forgot-link">
+            <a href="#" id="forgotPasswordLink">Esqueceu a senha?</a>
+        </div>
+    </div>
+    
+    <button id="loginBtn">Entrar</button>
+    
+    <div id="errorMsg" class="error"></div>
+    <div id="successMsg" class="success"></div>
+    
+    <div class="link">Ainda não tem conta? <a href="registar.html">Registar</a></div>
+</div>
+
+<script>
+    const firebaseConfig = {
+        apiKey: "AIzaSyBtLz62pV3LLzFpNdn1O8edg9geCAwXZUY",
+        authDomain: "trocaspt.firebaseapp.com",
+        projectId: "trocaspt",
+        storageBucket: "trocaspt.firebasestorage.app",
+        messagingSenderId: "802322082007",
+        appId: "1:802322082007:web:5359f38babfa5daa9ba892"
+    };
+    
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+
+    const loginBtn = document.getElementById('loginBtn');
+    const forgotLink = document.getElementById('forgotPasswordLink');
+    const errorDiv = document.getElementById('errorMsg');
+    const successDiv = document.getElementById('successMsg');
+
+    async function fazerLogin() {
+        const email = document.getElementById('email').value.trim();
+        const password = document.getElementById('password').value.trim();
+        
+        errorDiv.innerText = '';
+        successDiv.innerText = '';
+        
+        if (!email || !password) {
+            errorDiv.innerText = 'Preencha todos os campos.';
+            return;
+        }
+
+        try {
+            await auth.signInWithEmailAndPassword(email, password);
+            
+            if (!auth.currentUser.emailVerified) {
+                await auth.signOut();
+                errorDiv.innerText = 'Por favor, verifique o seu email antes de entrar.';
+                return;
+            }
+            
+            window.location.href = 'index.html';
+        } catch (err) {
+            console.error(err);
+            if (err.code === 'auth/user-not-found' || err.code === 'auth/wrong-password') {
+                errorDiv.innerText = 'Email ou palavra-passe incorretos.';
+            } else if (err.code === 'auth/too-many-requests') {
+                errorDiv.innerText = 'Muitas tentativas. Tente mais tarde.';
+            } else {
+                errorDiv.innerText = 'Ocorreu um erro. Tente novamente.';
+            }
+        }
+    }
+
+    loginBtn.addEventListener('click', fazerLogin);
+
+    document.getElementById('email').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') fazerLogin();
+    });
+    document.getElementById('password').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') fazerLogin();
+    });
+
+    forgotLink.addEventListener('click', async (e) => {
+        e.preventDefault();
+        const email = document.getElementById('email').value.trim();
+        errorDiv.innerText = '';
+        successDiv.innerText = '';
+
+        if (!email) {
+            errorDiv.innerText = 'Por favor, insira o seu email no campo acima.';
+            return;
+        }
+
+        try {
+            await auth.sendPasswordResetEmail(email);
+            successDiv.innerText = 'Email de recuperação enviado! Verifique a sua caixa de entrada.';
+        } catch (err) {
+            if (err.code === 'auth/user-not-found') {
+                errorDiv.innerText = 'Não existe conta com este email.';
+            } else {
+                errorDiv.innerText = 'Erro ao enviar email. Tente novamente.';
+            }
+        }
+    });
+</script>
+
+<footer style="position:fixed;bottom:15px;left:0;right:0;text-align:center;font-size:0.8rem;color:#7a8699;">
+    &copy; 2026 Trocas PT. Todos os direitos reservados.<br>
+    Contacto: <a href="mailto:contacto@trocaspt.com" style="color:#f0ad4e;">contacto@trocaspt.com</a>
+</footer>
+</body>
+</html>
