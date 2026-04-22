@@ -1118,37 +1118,44 @@ button {
 .lightbox-prev { left: 16px; }
 .lightbox-next { right: 16px; }
 
-/* =============== MEDIA QUERIES =============== */
 @media (max-width: 900px) {
     .two-columns {
         grid-template-columns: 1fr;
     }
-    
+
     .form-card {
         position: static;
+        padding: 0.6rem;
     }
-    
+
+    .publish-toggle-btn {
+        padding: 0.65rem 1rem;
+        font-size: 0.85rem;
+        border-radius: 10px;
+    }
+
     .header {
         flex-direction: row;
         flex-wrap: nowrap;
         align-items: center;
-        padding: 0.6rem 1rem;
+        padding: 1rem 1.2rem;
+        gap: 0.8rem;
+        position: relative;
     }
 
     .social-buttons {
         order: -1;
-        margin-left: 0;
-        margin-top: 0;
+        margin: 0;
         width: auto;
         flex-shrink: 0;
-        gap: 0.4rem;
+        gap: 0.5rem;
+        z-index: 1;
     }
 
     h1 {
-        position: static;
-        transform: none;
-        flex: 1;
-        text-align: center;
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
         font-size: 1.1rem;
         margin: 0;
         white-space: nowrap;
@@ -1156,17 +1163,8 @@ button {
 
     .user-area {
         flex-shrink: 0;
-    }
-}
-
-@media (max-width: 600px) {
-    .ads-grid {
-        grid-template-columns: repeat(2, 1fr);
-        gap: 0.8rem;
-    }
-    
-    .lightbox-nav {
-        display: none;
+        margin-left: auto;
+        z-index: 1;
     }
 }
 
