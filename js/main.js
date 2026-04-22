@@ -769,14 +769,18 @@ const chatMsgs = document.getElementById('chatMessages');
 const chatInp = document.getElementById('chatInput');
 const sendMsg = document.getElementById('sendMsgBtn');
 const closeChatBtn = document.getElementById('closeChat');
+const closeInboxBtn = document.getElementById('closeInbox');
 
 let activeChat = { partnerId: null, adId: null, chatId: null };
-let chatUnsub = null; // { ref, cb } em vez de só o callback
+let chatUnsub = null;
+
+function fecharInbox() {
+    inboxModal.style.display = 'none';
+}
 
 function fecharChat() {
     chatModal.style.display = 'none';
     if (chatUnsub) {
-        // ✅ CORRIGIDO: desligar o listener corretamente com .off()
         chatUnsub.ref.off('child_added', chatUnsub.cb);
         chatUnsub = null;
     }
@@ -809,7 +813,6 @@ async function openChat(pid, pname, title, aid) {
         await dbRT.ref(`userChats/${pid}/${cid}`).set(true);
     }
 
-    // ✅ CORRIGIDO: guardar a referência e o callback separadamente
     const refMensagens = dbRT.ref(`chats/${cid}/messages`).orderByChild('timestamp');
 
     const cb = snapshot => {
@@ -827,7 +830,7 @@ async function openChat(pid, pname, title, aid) {
     };
 
     refMensagens.on('child_added', cb);
-    chatUnsub = { ref: refMensagens, cb }; // ✅ guarda ref + cb para o .off() funcionar
+    chatUnsub = { ref: refMensagens, cb };
 }
 
 sendMsg.onclick = async () => {
@@ -845,9 +848,19 @@ sendMsg.onclick = async () => {
 };
 
 closeChatBtn.onclick = fecharChat;
+if (closeInboxBtn) closeInboxBtn.onclick = fecharInbox;
 
-window.addEventListener('click', (e) => { if (e.target === chatModal) fecharChat(); });
-document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && chatModal.style.display === 'flex') fecharChat(); });
+window.addEventListener('click', (e) => {
+    if (e.target === chatModal) fecharChat();
+    if (e.target === inboxModal) fecharInbox();
+});
+
+document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+        if (chatModal.style.display === 'flex') fecharChat();
+        if (inboxModal.style.display === 'flex') fecharInbox();
+    }
+});
 
 async function loadInbox() {
     if (!currentUser) return;
@@ -861,7 +874,6 @@ async function loadInbox() {
         const c = cs.val();
         if (!c) continue;
 
-        // ✅ Verificar anúncio PRIMEIRO — se não existe, ignorar este chat
         const ad = await adsCol.doc(c.adId).get();
         if (!ad.exists) continue;
         const adTitle = ad.data().title;
@@ -923,7 +935,7 @@ async function loadInbox() {
 
     inboxList.querySelectorAll('.inbox-item').forEach(el => {
         el.onclick = () => {
-            inboxModal.style.display = 'none';
+            fecharInbox();
             openChat(el.dataset.pid, el.dataset.name, el.dataset.title, el.dataset.aid);
         };
     });
