@@ -12,7 +12,7 @@
 // =============================================================
 
 const firebaseConfig = {
-    apiKey:            "AIzaSyBtLz62pV3LLzFpNdn1O8edg9geCAwXZUY",
+    apiKey:            "AIzaSyDuuLuAkOrHSGGTn0M2F_HpmF9kd-TpwBg",
     authDomain:        "trocaspt.firebaseapp.com",
     projectId:         "trocaspt",
     storageBucket:     "trocaspt.firebasestorage.app",
