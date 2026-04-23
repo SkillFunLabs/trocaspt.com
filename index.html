@@ -250,68 +250,51 @@
 
 <!-- ================== MODAL DESTAQUE PREMIUM ================== -->
 <div id="premiumRequestModal" class="modal">
-    <div class="modal-content" style="max-width:550px">
-        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1.5rem">
-            <h3 style="color:var(--gold);margin:0"><i class="fas fa-crown"></i> <span id="premiumModalTitle">Destacar Anúncio</span></h3>
-            <button id="closePremiumRequestBtn" style="background:none;border:none;font-size:1.5rem;color:#fff;cursor:pointer;width:auto">&times;</button>
+    <div class="modal-content" style="max-width:420px;padding:1.2rem;max-height:90vh;overflow-y:auto">
+        
+        <!-- Header -->
+        <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:1rem">
+            <h3 style="color:var(--gold);margin:0;font-size:1rem"><i class="fas fa-fire" style="color:#ff6b35"></i> <span id="premiumModalTitle">Destacar Anúncio</span></h3>
+            <button id="closePremiumRequestBtn" style="background:none;border:none;font-size:1.4rem;color:#fff;cursor:pointer;width:auto;padding:0">&times;</button>
         </div>
-        
-        <p style="margin-bottom:1rem">Anúncio: <strong id="premiumAdTitle"></strong></p>
-        
-        <!-- Botões Stripe para destaque individual -->
-        <div style="background:rgba(255,255,255,0.05);padding:1rem;border-radius:12px;margin-bottom:1rem">
-            <p style="margin-bottom:0.8rem"><i class="fas fa-star" style="color:var(--gold)"></i> <strong>Destacar este anúncio:</strong></p>
-            <div style="display:flex;flex-direction:column;gap:0.8rem">
-                <a href="https://buy.stripe.com/9B628j4cbb6kcVO9bmgIo01" target="_blank" style="background:#635bff;color:white;text-align:center;padding:10px;border-radius:40px;text-decoration:none;font-weight:bold;">💎 7 dias – 0,50€</a>
-                <a href="https://buy.stripe.com/6oU00b7on8Yc1d69bmgIo04" target="_blank" style="background:#635bff;color:white;text-align:center;padding:10px;border-radius:40px;text-decoration:none;font-weight:bold;">💎 15 dias – 1,00€</a>
-                <a href="https://buy.stripe.com/cNifZ9eQPcao5tmfzKgIo03" target="_blank" style="background:#635bff;color:white;text-align:center;padding:10px;border-radius:40px;text-decoration:none;font-weight:bold;">💎 30 dias – 2,00€</a>
+
+        <p style="font-size:0.8rem;color:rgba(255,255,255,0.6);margin-bottom:1rem">Anúncio: <strong style="color:#fff" id="premiumAdTitle"></strong></p>
+
+        <!-- Destaque individual -->
+        <div style="margin-bottom:0.8rem">
+            <p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;color:rgba(255,255,255,0.5);margin-bottom:0.6rem">🔥 Destacar este anúncio</p>
+            <div style="display:flex;flex-direction:column;gap:0.5rem">
+                <a href="https://buy.stripe.com/9B628j4cbb6kcVO9bmgIo01" target="_blank" style="background:#635bff;color:white;text-align:center;padding:0.7rem;border-radius:30px;text-decoration:none;font-weight:700;font-size:0.85rem">7 dias — 0,50€</a>
+                <a href="https://buy.stripe.com/6oU00b7on8Yc1d69bmgIo04" target="_blank" style="background:#635bff;color:white;text-align:center;padding:0.7rem;border-radius:30px;text-decoration:none;font-weight:700;font-size:0.85rem">15 dias — 1,00€</a>
+                <a href="https://buy.stripe.com/cNifZ9eQPcao5tmfzKgIo03" target="_blank" style="background:#635bff;color:white;text-align:center;padding:0.7rem;border-radius:30px;text-decoration:none;font-weight:700;font-size:0.85rem">30 dias — 2,00€</a>
             </div>
         </div>
-        
-        <!-- Botão Stripe para conta premium -->
-        <div style="background:rgba(245,192,96,0.15);border:1px solid var(--gold);padding:1rem;border-radius:12px;margin-bottom:1.5rem">
-            <p style="margin-bottom:0.5rem;color:var(--gold);font-weight:700">
-                <i class="fas fa-crown"></i> CONTA PREMIUM
-            </p>
-            <p style="font-size:0.9rem;margin-bottom:0.5rem">
-                <strong>10,00€ – 30 dias</strong><br>
-                <span style="font-size:0.8rem;opacity:0.9">Todos os seus anúncios ficam destacados durante 30 dias.</span>
-            </p>
-            <a href="https://buy.stripe.com/5kQfZ94cbdes5tmafqgIo00" target="_blank" style="display:block;background:#f5b042;color:#1e1e2f;text-align:center;padding:12px;border-radius:40px;text-decoration:none;font-weight:bold;margin-top:10px;">👑 Ativar Conta Premium – 10,00€</a>
+
+        <hr style="border-color:rgba(255,255,255,0.08);margin:0.8rem 0">
+
+        <!-- Conta Premium -->
+        <div style="margin-bottom:0.8rem">
+            <p style="font-size:0.75rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--gold);margin-bottom:0.6rem"><i class="fas fa-crown"></i> Conta Premium — todos os anúncios</p>
+            <a href="https://buy.stripe.com/5kQfZ94cbdes5tmafqgIo00" target="_blank" style="display:block;background:var(--gold);color:#1e1e2f;text-align:center;padding:0.7rem;border-radius:30px;text-decoration:none;font-weight:700;font-size:0.85rem">30 dias — 10,00€</a>
         </div>
-        
-        <!-- Área do ID com botão Copiar -->
-        <div style="background:rgba(0,0,0,0.3);padding:1rem;border-radius:12px;margin-bottom:1rem">
-            <label style="display:block;margin-bottom:0.5rem;font-size:0.85rem;font-weight:bold;">📋 ID necessário para ativação:</label>
-            <div style="display:flex;gap:0.5rem;align-items:center;flex-wrap:wrap;margin-bottom:0.8rem">
-                <input type="text" id="premiumAdId" readonly style="flex:3;background:transparent;border:1px solid var(--border);padding:0.6rem;color:var(--gold);font-weight:700;text-align:center;font-size:0.9rem;border-radius:8px;font-family:monospace">
-                <button id="copyIdBtn" style="flex:1;background:var(--gold);color:#000;border:none;padding:0.6rem;border-radius:8px;cursor:pointer;font-weight:bold;">
-                    <i class="fas fa-copy"></i> Copiar
-                </button>
+
+        <hr style="border-color:rgba(255,255,255,0.08);margin:0.8rem 0">
+
+        <!-- ID -->
+        <div style="margin-bottom:0.8rem">
+            <p style="font-size:0.75rem;color:rgba(255,255,255,0.5);margin-bottom:0.4rem">📋 ID para ativação</p>
+            <div style="display:flex;gap:0.4rem">
+                <input type="text" id="premiumAdId" readonly style="flex:1;background:rgba(0,0,0,0.3);border:1px solid rgba(255,255,255,0.1);padding:0.5rem 0.7rem;color:var(--gold);font-weight:700;font-size:0.8rem;border-radius:8px;font-family:monospace">
+                <button id="copyIdBtn" style="background:var(--gold);color:#000;border:none;padding:0.5rem 0.8rem;border-radius:8px;cursor:pointer;font-weight:700;font-size:0.8rem;width:auto"><i class="fas fa-copy"></i></button>
             </div>
-            <p id="premiumUserIdLine" style="font-size:0.75rem;color:#aaa;margin-top:0.3rem;">
-                Para Conta Premium, utilize o ID da sua conta: <strong id="premiumUserIdDisplay"></strong>
-            </p>
+            <p id="premiumUserIdLine" style="font-size:0.7rem;color:rgba(255,255,255,0.4);margin-top:0.4rem">Premium: ID da conta — <strong id="premiumUserIdDisplay" style="color:var(--gold)"></strong></p>
         </div>
-        
-        <!-- Instruções claras com o novo email -->
-        <div style="background:rgba(100,100,200,0.1);padding:1rem;border-radius:12px;margin-bottom:1rem;border-left:3px solid var(--gold)">
-            <p style="font-size:0.85rem;margin-bottom:0.5rem;font-weight:bold">📌 Como ativar o destaque:</p>
-            <ol style="margin-left:1.2rem;font-size:0.8rem;line-height:1.5;color:#ddd">
-                <li>Copie o <strong>ID</strong> acima (botão "Copiar").</li>
-                <li>Escolha um plano e clique no botão de pagamento (Stripe).</li>
-                <li>Após o pagamento, envie um email para <strong><a href="mailto:premium-destaque@trocaspt.com" style="color:var(--gold);text-decoration:underline;">premium-destaque@trocaspt.com</a></strong> com:</li>
-                <ul style="margin-left:1.5rem;margin-top:0.3rem">
-                    <li>O <strong>ID copiado</strong> (anúncio ou conta).</li>
-                    <li>O <strong>comprovativo</strong> ou número da transação (ex: "ch_..." do Stripe).</li>
-                </ul>
-                <li>A ativação será feita <strong>manualmente em até 24h</strong> após a confirmação do pagamento.</li>
-            </ol>
+
+        <!-- Instruções compactas -->
+        <div style="background:rgba(255,255,255,0.04);border-left:2px solid var(--gold);padding:0.7rem 0.9rem;border-radius:0 8px 8px 0;font-size:0.75rem;color:rgba(255,255,255,0.6);line-height:1.6">
+            1. Copia o ID → 2. Paga → 3. Envia email com ID + comprovativo para <a href="mailto:premium-destaque@trocaspt.com" style="color:var(--gold)">premium-destaque@trocaspt.com</a> → ativação em 24h.
         </div>
-        
-        <p style="font-size:0.7rem;color:var(--muted);text-align:center">
-            🔐 Pagamento processado pela Stripe. Dúvidas? <a href="mailto:premium-destaque@trocaspt.com" style="color:var(--gold);">premium-destaque@trocaspt.com</a>
-        </p>
+
     </div>
 </div>
 
